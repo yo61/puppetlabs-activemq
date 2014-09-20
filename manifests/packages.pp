@@ -12,7 +12,8 @@
 #
 class activemq::packages (
   $version,
-  $package
+  $package,
+  $package_src
 ) {
 
   validate_re($version, '^[~+._0-9a-zA-Z:-]+$')
@@ -21,8 +22,9 @@ class activemq::packages (
   $package_real = $package
 
   package { $package_real:
-    ensure  => $version_real,
-    notify  => Service['activemq'],
+    ensure => $version_real,
+    source => $package_src,
+    notify => Service['activemq'],
   }
 
   if $::osfamily == 'RedHat' {

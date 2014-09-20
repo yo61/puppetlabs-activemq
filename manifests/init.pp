@@ -30,7 +30,8 @@ class activemq(
   $ensure        = 'running',
   $instance      = 'activemq',
   $webconsole    = true,
-  $server_config = 'UNSET'
+  $server_config = 'UNSET',
+  $package_src   = undef
 ) {
 
   validate_re($ensure, '^running$|^stopped$')
@@ -56,9 +57,10 @@ class activemq(
   }
 
   class { 'activemq::packages':
-    version => $version_real,
-    package => $package_real,
-    notify  => Class['activemq::service'],
+    version     => $version_real,
+    package     => $package_real,
+    package_src => $package_src,
+    notify      => Class['activemq::service'],
   }
 
   class { 'activemq::config':
